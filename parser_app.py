@@ -47,4 +47,4 @@ if __name__ == "__main__":
 
     progressbar.progress_done()
 
-    logger.logger.info('Done getting emails')
+    logger.logger.info('Done getting emails, updating index')
