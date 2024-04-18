@@ -21,13 +21,13 @@ class HtmlMailArchiver(config_logger.Logger):
         self.mailsdir = 'MailArchive/Mails'
         self.attachmentsdir = 'MailArchive/Attachments/'
         self._check_mailsdir(self.mailsdir)
-        self.mails_info = {}
+        self.save_paths = {}
 
     def archive_mail(self, mail: Dict, message: bytes) -> None:
         mail_times = self._get_date(mail)
         mail_path = self._get_mail_path(mail, mail_times)
-        self._update_mails_info(mail, mail_times)
-        self._style_mails(mail, mail_path, message)
+        self._add_save_path(mail, mail_times)
+        self._write_styled_mail(mail, mail_path, message)
 
     def archive_attachment(self, attachment_content: bytes, attachment_name: str) -> None:
         pathlib.Path(self.attachmentsdir).mkdir(parents=True, exist_ok=True)
@@ -41,7 +41,9 @@ class HtmlMailArchiver(config_logger.Logger):
             except NotADirectoryError:
                 logging.warning(f'Not a directory')
 
-    def _update_mails_info(self, mail, mail_times):
+    def _add_save_path(self, mail, mail_times):
+        """ Add the date, subject, and id of this particular mail to a nested
+         array that tracks all mails per day (for organizing the ui) """
         year = mail_times.get('year')
         month = mail_times.get('month')
         day = mail_times.get('day')
@@ -58,19 +60,18 @@ class HtmlMailArchiver(config_logger.Logger):
             'id': mailid
         }
 
-        if not self.mails_info.get(year):
-            self.mails_info[year] = {}
+        if not self.save_paths.get(year):
+            self.save_paths[year] = {}
 
-        if not self.mails_info[year].get(month):
-            self.mails_info[year][month] = {}
+        if not self.save_paths[year].get(month):
+            self.save_paths[year][month] = {}
 
-        if not self.mails_info[year][month].get(day):
-            self.mails_info[year][month][day] = [mail_info]
-        elif mail_info not in self.mails_info[year][month][day]:
-            self.mails_info[year][month][day].append(mail_info)
+        if not self.save_paths[year][month].get(day):
+            self.save_paths[year][month][day] = [mail_info]
+        elif mail_info not in self.save_paths[year][month][day]:
+            self.save_paths[year][month][day].append(mail_info)
 
-
-    def _style_mails(self, mail: Dict, mail_path: str, message: bytes):
+    def _write_styled_mail(self, mail: Dict, mail_path: str, message: bytes):
 
         with helpers.Helper.open_file(mail_path) as f:
             f.write('<head>\n<link rel="stylesheet" href="../../../../static/css/custom.css">\n</head>\n')

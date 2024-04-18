@@ -5,8 +5,8 @@ from src.logger import config_logger
 
 class HtmlIndexer(config_logger.Logger):
 
-    def __init__(self, mails_info) -> None:
-        self.mails_info = mails_info
+    def __init__(self, save_paths) -> None:
+        self.save_paths = save_paths
 
     def write_index(self) -> None:
         self.logger.info('Updating index')
@@ -21,16 +21,16 @@ class HtmlIndexer(config_logger.Logger):
         html_topic_entry = '''<p>\n<a href='{path}'>{subject}</a> - id: {id}\n</p>\n'''
 
         years_to_write = []
-        for year in sorted(self.mails_info.keys()):
+        for year in sorted(self.save_paths.keys()):
 
             months_for_the_year = []
-            for month in sorted(self.mails_info[year].keys()):
+            for month in sorted(self.save_paths[year].keys()):
 
                 days_for_the_month = []
-                for day in sorted(self.mails_info[year][month].keys()):
+                for day in sorted(self.save_paths[year][month].keys()):
 
                     topics_for_the_day = []
-                    for topic in self.mails_info[year][month][day]:
+                    for topic in self.save_paths[year][month][day]:
                         topics_for_the_day.append(html_topic_entry.format(
                             path=topic.get('path'),
                             subject=topic.get('subject'),

@@ -34,7 +34,7 @@ if __name__ == "__main__":
     progressbar.progress_done()
     logger.logger.info('Done getting emails')
 
-    html_indexer = HtmlIndexer(archiver_app.mails_info)
+    html_indexer = HtmlIndexer(archiver_app.save_paths)
     html_indexer.write_index()
 
     attachments_amount = backupreader_app.get_attachments_amount()
