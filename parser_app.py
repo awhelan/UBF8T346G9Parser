@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from src.archiver.html_indexer import write_index, HtmlIndexer
+from src.archiver.html_indexer import HtmlIndexer
 from src.backupreader import reader
 from src.olk15parser import parser
 from src.archiver import archiver

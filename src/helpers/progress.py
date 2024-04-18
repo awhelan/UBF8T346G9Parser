@@ -44,5 +44,8 @@ class ProgressBar(config_logger.Logger):
         return '{}%\t({}/{})'.format(self.percent_done, self.counter, self.amount)
 
     def _clear_line(self):
-        size = os.get_terminal_size().columns
+        try:
+            size = os.get_terminal_size().columns
+        except OSError:
+            size = 80
         print(' ' * size, end='\r')
