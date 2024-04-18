@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from src.archiver.html_indexer import write_index, HtmlIndexer
 from src.backupreader import reader
 from src.olk15parser import parser
 from src.archiver import archiver
@@ -33,7 +34,8 @@ if __name__ == "__main__":
     progressbar.progress_done()
     logger.logger.info('Done getting emails')
 
-    archiver_app.update_index()
+    html_indexer = HtmlIndexer(archiver_app.mails_info)
+    html_indexer.write_index()
 
     attachments_amount = backupreader_app.get_attachments_amount()
     progressbar = progress.ProgressBar(attachments_amount)
