@@ -9,7 +9,7 @@ from src.logger import config_logger #type: ignore
 
 import locale
 try:
-    locale.setlocale(locale.LC_ALL, 'da_DK.utf8')
+    locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 except:
     pass
 
