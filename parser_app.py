@@ -14,6 +14,11 @@ if __name__ == "__main__":
     olk15parser_app = parser.OLK15Parser()
     archiver_app = archiver.MailArchiver()
 
+    for i, mail in enumerate(backupreader_app.get_mails_from_database()):
+        mail_path = profile_data_location + mail.get('content_path')
+        print(i, mail)
+        message = olk15parser_app.get_mail_content(mail_path, mail.get('subject'))
+
     mails_amount = backupreader_app.get_mails_amount()
     progressbar = progress.ProgressBar(mails_amount)
 
