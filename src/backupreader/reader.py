@@ -45,7 +45,7 @@ class BackupReader(config_logger.Logger):
         self.logger.info('Getting attachments from folders')
         message_attachments = 'Message Attachments/'
         attachments_location = pathlib.Path(self.profile_data_location +
-            message_attachments)
+                                            message_attachments)
         attachments_directories = [directory for directory
                                    in attachments_location.iterdir()
                                    if directory.is_dir()]
