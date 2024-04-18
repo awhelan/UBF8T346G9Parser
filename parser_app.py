@@ -13,7 +13,7 @@ if __name__ == "__main__":
     profile_data_location = helpers.Helper.get_location()
     backupreader_app = reader.BackupReader(profile_data_location)
     olk15parser_app = parser.OLK15Parser()
-    archiver_app = html_archiver.MailArchiver()
+    archiver_app = html_archiver.HtmlMailArchiver()
 
     for i, mail in enumerate(backupreader_app.get_mails_from_database()):
         mail_path = profile_data_location + mail.get('content_path')

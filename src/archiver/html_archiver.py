@@ -13,7 +13,7 @@ try:
 except:
     pass
 
-class MailArchiver(config_logger.Logger):
+class HtmlMailArchiver(config_logger.Logger):
     """Archive email
     """
 
