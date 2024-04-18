@@ -1,3 +1,4 @@
+import logging
 import pathlib
 import shutil
 from datetime import datetime
@@ -31,8 +32,14 @@ class MailArchiver(config_logger.Logger):
     def archive_attachment(self, attachment_content: bytes, attachment_name: str) -> None:
         pathlib.Path(self.attachmentsdir).mkdir(parents=True, exist_ok=True)
         if attachment_content != b'':
-            with open(self.attachmentsdir + attachment_name, 'wb') as attachment_file:
-                attachment_file.write(attachment_content)
+            try:
+                with open(self.attachmentsdir + attachment_name, 'wb') as attachment_file:
+                    attachment_file.write(attachment_content)
+            except FileNotFoundError:
+                """ Log and Ignore if file isn't found..."""
+                logging.warning(f'File {attachment_name} not found.')
+            except NotADirectoryError:
+                logging.warning(f'Not a directory')
 
     def _update_mails_info(self, mail, mail_times):
         year = mail_times.get('year')
